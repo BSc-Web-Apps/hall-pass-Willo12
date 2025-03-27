@@ -11,7 +11,7 @@ interface TaskProps {
 export default function Task({ title, category, isChecked }: TaskProps) {
   const [checked, setChecked] = React.useState(false);
   return (
-    <View>
+    <View className="flex-1 justify-center items-center">
       <View>
         {/* <Checkbox */}
         {/*   checked={checked} */}

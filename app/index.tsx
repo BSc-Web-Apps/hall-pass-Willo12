@@ -25,6 +25,7 @@ export default function HomeScreen() {
   ]
   return (
     <View className="flex-1 justify-center items-center gap-5 p-6 bg-background">
+      <Logo />
       {tasks.map((task) => (
         <Task
           key={task.id}
@@ -33,7 +34,6 @@ export default function HomeScreen() {
           title={task.title}
         />
       ))}
-      <Logo />
     </View>
   );
 }
