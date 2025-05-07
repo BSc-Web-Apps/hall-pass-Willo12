@@ -9,6 +9,7 @@ import { useColorScheme } from "~/lib/useColorScheme";
 import HomeScreen from "./index";
 import SettingsScreen from "./settings";
 import TaskScreen from "./tasks";
+import { FileCheck } from "lucide-react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -62,19 +63,20 @@ export default function RootLayout() {
         }}
       />
       <Tab.Screen
+        name="Tasks"
+        component={TaskScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => <FileCheck size={size} color={color} />,
+        }}
+      />
+      <Tab.Screen
         name="Settings"
         component={SettingsScreen}
         options={{
           tabBarIcon: ({ color, size }) => <Info size={size} color={color} />,
         }}
       />
-      <Tab.Screen
-        name="Tasks"
-        component={TaskScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => <Info size={size} color={color} />,
-        }}
-      />
+
     </Tab.Navigator>
   );
 }
