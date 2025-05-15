@@ -1,78 +1,58 @@
-import React from "react";
-import { View, Text, } from "react-native";
+import * as React from "react";
+import { TouchableOpacity, View } from "react-native";
 import { Checkbox } from "~/components/ui/checkbox";
+import { Text } from "~/components/ui/text";
+import TaskDialog from "./TaskDialogue";
 
-interface Task {
+export interface Task {
+  id: number;
   title: string;
   category: string;
   isChecked: boolean;
 }
-interface TaskProps {
-  task: Task
+
+export interface TaskProps {
+  task: Task;
 }
 
-export default function Task({ task }: TaskProps) {
-  const [checked, setChecked] = React.useState(false);
-  const [stateTask, setStateTask] = React.useState(task);
-  const [isEditable, setIsEditable] = React.useState(false);
-  const [initialTask, setInitialTask] = React.useState(task);
+export default function Task({ task: propTask }: TaskProps) {
+  const [task, setTask] = React.useState(propTask);
+  const [showDialog, setShowDialog] = React.useState(false);
+  const { title, category, isChecked } = task;
 
-  const handleUpdateTask = (event: any) => {
-    event.preventDefault();
-    const updateTask = { ...stateTask }
+  const handleSetChecked = () => {
+    const nextChecked = !task.isChecked;
+    setTask({ ...task, isChecked: nextChecked });
+  };
 
-    setIsEditable(!isEditable);
-    setInitialTask(stateTask);
-    setStateTask(updateTask);
-  }
-
-  const handleCancelChanges = (event: any) => {
-    setIsEditable(!isEditable);
-    setStateTask(initialTask);
-  }
-
-  const handleTitleChange = (value: any) => {
-    const nextTask = { ...stateTask }
-    nextTask.title = value;
-
-    setStateTask(nextTask)
-  }
-
-  const handleCategoryChange = (value: any) => {
-    const nextTask = { ...stateTask }
-    nextTask.category = value;
-
-    setStateTask(nextTask)
-  }
   return (
     <>
-      <View className="flex-1 flex flex-row gap-2 justify-center items-center">
-        <View>
+      <TouchableOpacity
+        className="flex flex-row w-screen px-20 "
+        delayLongPress={500}
+        onLongPress={() => setShowDialog(true)}
+      >
+        <View className="px-8 pt-8 w-24 h-full">
           <Checkbox
-            checked={checked}
-            onCheckedChange={setChecked}
+            className="border-foreground checked:bg-foreground"
+            checked={isChecked}
+            onCheckedChange={handleSetChecked}
           />
         </View>
-        <View className={`${isEditable ? "flex" : "hidden"} flex-col gap-2 p-4 `}>
-          <input
-            type="text"
-            value={stateTask.title}
-            onChange={(event) => handleTitleChange(event.target.value)}
-          />
-          <input
-            type="text"
-            value={stateTask.category}
-            onChange={(event) => handleCategoryChange(event.target.value)}
-          />
+        <View className="py-4 flex gap-1 flex-1 h-full border-b border-foreground-transparent">
+          <Text className="text-foreground text-xl">{title}</Text>
+          <Text className="text-foreground-transparent text-xl">
+            {category}
+          </Text>
         </View>
+      </TouchableOpacity>
 
-        <View className={`${isEditable ? "hidden" : "flex"} flex-col gap-2 p-4`}>
-          <Text className="text-white">{stateTask.title}</Text>
-          <Text className="text-white">{stateTask.category}</Text>
-        </View>
-        <button type="button" onClick={handleUpdateTask} className="mb-4 ml-4 px-4 py-1 rounded bg-gray-400 font-semibold text-gray-100 cursor-pointer hover:text-gray-300">{isEditable ? "Submit" : "Edit"}</button>
-        <button type="button" onClick={handleCancelChanges} className={`${isEditable ? "flex" : "hidden"} mb-4 ml-4 px-4 py-1 rounded bg-gray-400 font-semibold text-gray-100 cursor-pointer hover:text-gray-300`}>Cancel</button>
-      </View >
+      <TaskDialog
+        task={task}
+        setTask={setTask}
+        showDialog={showDialog}
+        setShowDialog={setShowDialog}
+      />
     </>
   );
 }
