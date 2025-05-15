@@ -1,5 +1,6 @@
 import * as React from "react";
 import { View } from "react-native";
+import { ScrollView } from "react-native";
 import AddTask from "~/components/ui/AddTask";
 import Logo from "~/components/ui/logo";
 import Task from "../components/ui/task";
@@ -24,11 +25,13 @@ export default function HomeScreen() {
   return (
     <View className="flex-1 justify-center items-center gap-5 bg-background">
       <Logo />
-      <View className="flex-1 justify-center items-center bg-background">
-        {tasks.map((task) => (
-          <Task task={task} />
-        ))}
-      </View>
+      <ScrollView className="h-40 my-20 -translate-y-20">
+        <View className="flex-1 justify-center items-center bg-background">
+          {tasks.map((task) => (
+            <Task task={task} />
+          ))}
+        </View>
+      </ScrollView>
       <View className="flex items-center">
         <AddTask onAdd={handleAddTask} />
       </View>
