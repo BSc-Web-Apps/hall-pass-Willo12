@@ -9,17 +9,6 @@ interface AddTaskProps {
 
 export default function AddTask({ onAdd }: AddTaskProps) {
   const [showDialog, setShowDialog] = React.useState(false);
-  const [title, setTitle] = React.useState("");
-  const [category, setCategory] = React.useState("");
-
-  const handleSave = () => {
-    if (title.trim()) {
-      onAdd(title, category);
-      setTitle("");
-      setCategory("");
-      setShowDialog(false);
-    }
-  };
 
   return (
     <View className="absolute -bottom-0 z-10">
@@ -32,14 +21,22 @@ export default function AddTask({ onAdd }: AddTaskProps) {
       </View>
 
       <TaskDialog
-        task={{ id: 0, title, category, isChecked: false }}
-        setTask={(newTask) => {
-          setTitle(newTask.title);
-          setCategory(newTask.category);
+        task={{
+          id: 0,
+          title: "",
+          category: "",
+          isChecked: false,
+          setTask: () => {},
         }}
+        setTask={() => {}}
         showDialog={showDialog}
         setShowDialog={setShowDialog}
-        onSave={handleSave}
+        onSave={(editedTitle: string, editedCategory: string) => {
+          if (editedTitle.trim()) {
+            onAdd(editedTitle, editedCategory);
+            setShowDialog(false);
+          }
+        }}
       />
     </View>
   );

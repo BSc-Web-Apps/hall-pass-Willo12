@@ -14,10 +14,6 @@ interface TaskItem {
 
 export default function HomeScreen() {
   const [tasks, setTasks] = React.useState<TaskItem[]>([
-    { id: 1, title: "Task 1", category: "Category 1", isChecked: false },
-    { id: 2, title: "Task 2", category: "Category 2", isChecked: true },
-    { id: 3, title: "Task 3", category: "Category 3", isChecked: false },
-    { id: 4, title: "Task 4", category: "Category 2", isChecked: true },
   ]);
 
   const handleAddTask = (title: string, category: string) => {

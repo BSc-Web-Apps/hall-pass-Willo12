@@ -20,7 +20,7 @@ interface TaskDialogProps {
   setTask: (task: Task) => void;
   setShowDialog: (showDialog: boolean) => void;
   showDialog: boolean;
-  onSave?: () => void;
+  onSave?: (title: string, category: string) => void;
 }
 
 export default function TaskDialog({
@@ -55,7 +55,7 @@ export default function TaskDialog({
 
     setTask(nextTask);
     if (onSave) {
-      onSave();
+      onSave(editedTitle, editedCategory);
     } else {
       setShowDialog(false);
     }
