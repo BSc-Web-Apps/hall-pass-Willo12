@@ -22,7 +22,7 @@ export default function AddTask({ onAdd }: AddTaskProps) {
   };
 
   return (
-    <View className="absolute -bottom-0 z-10 ">
+    <View className="absolute -bottom-0 z-10">
       <View className="w-24 h-24 p-1 bg-brand-primary rounded-full flex items-center justify-center">
         <TouchableOpacity onPress={() => setShowDialog(true)}>
           <View className="w-full h-auto p-3 bg-brand-primary rounded-full flex items-center justify-center border-4 border-background">

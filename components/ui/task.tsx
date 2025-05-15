@@ -7,6 +7,7 @@ import TaskDialog from "./TaskDialogue";
 export interface Task {
   id: number;
   title: string;
+  setTask: (task: Task) => void;
   category: string;
   isChecked: boolean;
 }

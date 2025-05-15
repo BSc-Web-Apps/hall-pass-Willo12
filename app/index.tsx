@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { ScrollView } from "react-native";
 import AddTask from "~/components/ui/AddTask";
 import Logo from "~/components/ui/logo";
@@ -14,6 +14,10 @@ interface TaskItem {
 
 export default function HomeScreen() {
   const [tasks, setTasks] = React.useState<TaskItem[]>([
+    { id: 1, title: "Task 1", category: "Category 1", isChecked: false },
+    { id: 2, title: "Task 2", category: "Category 2", isChecked: true },
+    { id: 3, title: "Task 3", category: "Category 3", isChecked: false },
+    { id: 4, title: "Task 4", category: "Category 2", isChecked: true },
   ]);
 
   const handleAddTask = (title: string, category: string) => {
@@ -23,18 +27,25 @@ export default function HomeScreen() {
   };
 
   return (
-    <View className="flex-1 justify-center items-center gap-5 bg-background">
-      <Logo />
-      <ScrollView className="h-40 my-20 -translate-y-20">
-        <View className="flex-1 justify-center items-center bg-background">
-          {tasks.map((task) => (
-            <Task task={task} />
-          ))}
-        </View>
+    <View className="flex-1 flex justify-between bg-background">
+      <View className="flex flex-row justify-center">
+        <Text className="pt-20 text-foreground font-bold text-6xl">
+          HallPass
+        </Text>
+      </View>
+      <ScrollView
+        contentContainerStyle={{
+          paddingHorizontal: 24,
+          paddingVertical: 16,
+        }}
+      >
+        {tasks.map((task) => (
+          <Task key={task.id} task={task} />
+        ))}
       </ScrollView>
-      <View className="flex items-center">
+      <View className="relative flex items-center">
         <AddTask onAdd={handleAddTask} />
       </View>
-    </View >
+    </View>
   );
 }

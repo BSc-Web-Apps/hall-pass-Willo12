@@ -14,6 +14,7 @@ import {
 import { Input } from "./input";
 import { Text } from "./text";
 
+
 interface TaskDialogProps {
   task: Task;
   setTask: (task: Task) => void;
@@ -30,6 +31,7 @@ export default function TaskDialog({
   onSave,
 }: TaskDialogProps) {
   const isNewTask = task.title === "" && task.category === "";
+
   const [editedTitle, setEditedTitle] = React.useState(task.title);
   const [editedCategory, setEditedCategory] = React.useState(task.category);
 
@@ -43,28 +45,27 @@ export default function TaskDialog({
     setEditedCategory(category);
   };
 
+
   const handleSave = () => {
     const nextTask = {
       ...task,
       title: editedTitle,
       category: editedCategory,
     };
+
     setTask(nextTask);
     if (onSave) {
       onSave();
     } else {
       setShowDialog(false);
     }
-
-    setTask(nextTask);
-    setShowDialog(false);
   };
 
   return (
     <Dialog open={showDialog} onOpenChange={setShowDialog}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Task</DialogTitle>
+          <DialogTitle>Edit</DialogTitle>
           <DialogDescription>
             Make changes to your task details here.
           </DialogDescription>
@@ -99,3 +100,4 @@ export default function TaskDialog({
     </Dialog>
   );
 }
+
