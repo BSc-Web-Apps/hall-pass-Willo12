@@ -26,9 +26,9 @@ export default function AddTask({ onAdd }: AddTaskProps) {
           title: "",
           category: "",
           isChecked: false,
-          setTask: () => {},
+          setTask: () => { },
         }}
-        setTask={() => {}}
+        setTask={() => { }}
         showDialog={showDialog}
         setShowDialog={setShowDialog}
         onSave={(editedTitle: string, editedCategory: string) => {

@@ -21,6 +21,10 @@ export default function HomeScreen() {
       tasks.length > 0 ? Math.max(...tasks.map((t) => t.id)) + 1 : 1;
     setTasks([...tasks, { id: nextId, title, category, isChecked: false }]);
   };
+  const handleDeleteTask = (taskId: number) => {
+    setTasks(tasks.filter(task => task.id !== taskId));
+  };
+
 
   return (
     <View className="flex-1 flex justify-between bg-background">
@@ -29,14 +33,10 @@ export default function HomeScreen() {
           HallPass
         </Text>
       </View>
-      <ScrollView
-        contentContainerStyle={{
-          paddingHorizontal: 24,
-          paddingVertical: 16,
-        }}
+      <ScrollView className="h-20 mt-20 mb-40"
       >
         {tasks.map((task) => (
-          <Task key={task.id} task={task} />
+          <Task key={task.id} task={task} onDelete={handleDeleteTask} />
         ))}
       </ScrollView>
       <View className="relative flex items-center">

@@ -1,8 +1,9 @@
 import * as React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Button, TouchableOpacity, View } from "react-native";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Text } from "~/components/ui/text";
 import TaskDialog from "./TaskDialogue";
+import { CrossIcon } from "lucide-react-native";
 
 export interface Task {
   id: number;
@@ -14,9 +15,10 @@ export interface Task {
 
 export interface TaskProps {
   task: Task;
+  onDelete: (taskId: number) => void;
 }
 
-export default function Task({ task: propTask }: TaskProps) {
+export default function Task({ task: propTask, onDelete }: TaskProps) {
   const [task, setTask] = React.useState(propTask);
   const [showDialog, setShowDialog] = React.useState(false);
   const { title, category, isChecked } = task;
@@ -25,6 +27,11 @@ export default function Task({ task: propTask }: TaskProps) {
     const nextChecked = !task.isChecked;
     setTask({ ...task, isChecked: nextChecked });
   };
+
+
+  const handleDelete = () => {
+    onDelete(task.id);
+  }
 
   return (
     <>
@@ -45,6 +52,14 @@ export default function Task({ task: propTask }: TaskProps) {
           <Text className="text-foreground-transparent text-xl">
             {category}
           </Text>
+        </View>
+        <View className="flex justify-center items-center">
+          <TouchableOpacity onPress={handleDelete}>
+
+            <CrossIcon fill={"#EF4444"} size={24} />
+          </TouchableOpacity>
+
+
         </View>
       </TouchableOpacity>
 
