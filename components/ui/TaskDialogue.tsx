@@ -1,26 +1,24 @@
-import React from "react";
+import * as React from "react";
 import { View } from "react-native";
-import { Task } from "./task";
-import { Button } from "./button";
+import { Task } from "~/components/ui/task";
+import { Button } from "~/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "./dialog";
-import { Input } from "./input";
-import { Text } from "./text";
+} from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
+import { Text } from "~/components/ui/text";
 
 interface TaskDialogProps {
   task: Task;
   setTask: (task: Task) => void;
   setShowDialog: (showDialog: boolean) => void;
   showDialog: boolean;
-  onSave?: (title: string, category: string) => void;
-  dialogTitle: string;
+  onSave?: (updatedTask: Task) => void;
 }
 
 export default function TaskDialog({
@@ -29,20 +27,19 @@ export default function TaskDialog({
   setShowDialog,
   showDialog,
   onSave,
-  dialogTitle,
 }: TaskDialogProps) {
-  const isNewTask = task.title === "" && task.category === "";
+  const isNewTask = task.id === 0;
 
   const [editedTitle, setEditedTitle] = React.useState(task.title);
   const [editedCategory, setEditedCategory] = React.useState(task.category);
 
-  // Reset edited values when dialog opens with a new task
+  // Reset internal state when dialog opens or task changes
   React.useEffect(() => {
     if (showDialog) {
       setEditedTitle(task.title);
       setEditedCategory(task.category);
     }
-  }, [showDialog, task.title, task.category]);
+  }, [task, showDialog]);
 
   const handleUpdateTitle = (title: string) => {
     setEditedTitle(title);
@@ -53,19 +50,29 @@ export default function TaskDialog({
   };
 
   const handleSave = () => {
+    // Only proceed if title is not empty
     if (editedTitle.trim()) {
-      const nextTask = {
+      // Create the updated task
+      const updatedTask = {
         ...task,
         title: editedTitle,
         category: editedCategory,
       };
 
-      setTask(nextTask);
-      if (onSave) {
-        onSave(editedTitle, editedCategory);
-      } else {
-        setShowDialog(false);
-      }
+      // First close the dialog
+      setShowDialog(false);
+
+      // Then update the task and call onSave
+      // This ensures the dialog is closed before any state updates
+      setTimeout(() => {
+        setTask(updatedTask);
+        if (onSave) {
+          onSave(updatedTask);
+        }
+      }, 0);
+    } else {
+      // Just close the dialog if title is empty
+      setShowDialog(false);
     }
   };
 
@@ -73,9 +80,11 @@ export default function TaskDialog({
     <Dialog open={showDialog} onOpenChange={setShowDialog}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{dialogTitle}</DialogTitle>
-          <DialogDescription>
-            Make changes to your task details here.
+          <DialogTitle>{isNewTask ? "Add" : "Edit"} Task</DialogTitle>
+          <DialogDescription className="w-80">
+            {isNewTask
+              ? "Add a new task here."
+              : "Make changes to your task details here."}
           </DialogDescription>
         </DialogHeader>
 
@@ -104,4 +113,3 @@ export default function TaskDialog({
     </Dialog>
   );
 }
-
