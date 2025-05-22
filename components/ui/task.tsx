@@ -16,41 +16,55 @@ export interface Task {
 export interface TaskProps {
   task: Task;
   onDelete: (taskId: number) => void;
+  onUpdate?: (task: Task) => void;
 }
 
-export default function Task({ task: propTask, onDelete }: TaskProps) {
+export default function Task({ task: propTask, onDelete, onUpdate }: TaskProps) {
   const [task, setTask] = React.useState(propTask);
   const [showDialog, setShowDialog] = React.useState(false);
-  const { title, category, isChecked } = task;
+
+  // Update local state when prop changes
+  React.useEffect(() => {
+    setTask(propTask);
+  }, [propTask]);
 
   const handleSetChecked = () => {
-    const nextChecked = !task.isChecked;
-    setTask({ ...task, isChecked: nextChecked });
+    const updatedTask = { ...task, isChecked: !task.isChecked };
+    setTask(updatedTask);
+    if (onUpdate) {
+      onUpdate(updatedTask);
+    }
   };
 
+  const handleTaskUpdate = (updatedTask: Task) => {
+    setTask(updatedTask);
+    if (onUpdate) {
+      onUpdate(updatedTask);
+    }
+  };
 
   const handleDelete = () => {
     onDelete(task.id);
-  }
+  };
 
   return (
     <>
       <TouchableOpacity
-        className="flex flex-row w-screen px-20 "
+        className="flex flex-row w-screen px-20"
         delayLongPress={500}
         onLongPress={() => setShowDialog(true)}
       >
         <View className="px-8 pt-8 w-24 h-full">
           <Checkbox
             className="border-foreground checked:bg-foreground"
-            checked={isChecked}
+            checked={task.isChecked}
             onCheckedChange={handleSetChecked}
           />
         </View>
         <View className="py-4 flex gap-1 flex-1 h-full border-b border-foreground-transparent">
-          <Text className="text-foreground text-xl">{title}</Text>
+          <Text className="text-foreground text-xl">{task.title}</Text>
           <Text className="text-foreground-transparent text-xl">
-            {category}
+            {task.category}
           </Text>
         </View>
         <View className="flex justify-center items-center">
@@ -63,7 +77,7 @@ export default function Task({ task: propTask, onDelete }: TaskProps) {
       <TaskDialog
         dialogTitle="Edit Task"
         task={task}
-        setTask={setTask}
+        setTask={handleTaskUpdate}
         showDialog={showDialog}
         setShowDialog={setShowDialog}
       />
