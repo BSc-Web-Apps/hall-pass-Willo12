@@ -12,6 +12,7 @@ import {
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Text } from "~/components/ui/text";
+import { useTasks } from "~/lib/TaskContext";
 
 interface TaskDialogProps {
   task: Task;
@@ -28,6 +29,7 @@ export default function TaskDialog({
   showDialog,
   onSave,
 }: TaskDialogProps) {
+  const { deleteTask } = useTasks();
   const isNewTask = task.id === 0;
 
   const [editedTitle, setEditedTitle] = React.useState(task.title);
@@ -76,6 +78,14 @@ export default function TaskDialog({
     }
   };
 
+  const handleDelete = () => {
+    setShowDialog(false);
+    // Use setTimeout to ensure dialog is closed before deletion
+    setTimeout(() => {
+      deleteTask(task.id);
+    }, 0);
+  };
+
   return (
     <Dialog open={showDialog} onOpenChange={setShowDialog}>
       <DialogContent>
@@ -102,12 +112,21 @@ export default function TaskDialog({
         </View>
 
         <DialogFooter>
-          <Button variant="outline" onPress={() => setShowDialog(false)}>
-            <Text>Cancel</Text>
-          </Button>
-          <Button onPress={handleSave}>
-            <Text>Save changes</Text>
-          </Button>
+          <View className="flex flex-row justify-between w-full">
+            {!isNewTask && (
+              <Button variant="destructive" onPress={handleDelete}>
+                <Text className="text-white">Delete</Text>
+              </Button>
+            )}
+            <View className="flex flex-row gap-2">
+              <Button variant="outline" onPress={() => setShowDialog(false)}>
+                <Text>Cancel</Text>
+              </Button>
+              <Button onPress={handleSave}>
+                <Text>Save changes</Text>
+              </Button>
+            </View>
+          </View>
         </DialogFooter>
       </DialogContent>
     </Dialog>
