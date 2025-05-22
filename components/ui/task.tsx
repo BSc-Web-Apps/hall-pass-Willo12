@@ -10,6 +10,8 @@ export interface Task {
   title: string;
   category: string;
   isChecked: boolean;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 export interface TaskProps {
