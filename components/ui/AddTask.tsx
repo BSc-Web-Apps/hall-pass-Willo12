@@ -28,6 +28,7 @@ export default function AddTask({ onAdd }: AddTaskProps) {
           isChecked: false,
           setTask: () => { },
         }}
+        dialogTitle="Add Task"
         setTask={() => { }}
         showDialog={showDialog}
         setShowDialog={setShowDialog}

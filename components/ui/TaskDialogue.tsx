@@ -21,6 +21,7 @@ interface TaskDialogProps {
   setShowDialog: (showDialog: boolean) => void;
   showDialog: boolean;
   onSave?: (title: string, category: string) => void;
+  dialogTitle: string;
 }
 
 export default function TaskDialog({
@@ -29,6 +30,7 @@ export default function TaskDialog({
   setShowDialog,
   showDialog,
   onSave,
+  dialogTitle,
 }: TaskDialogProps) {
   const isNewTask = task.title === "" && task.category === "";
 
@@ -65,7 +67,7 @@ export default function TaskDialog({
     <Dialog open={showDialog} onOpenChange={setShowDialog}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit</DialogTitle>
+          <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogDescription>
             Make changes to your task details here.
           </DialogDescription>

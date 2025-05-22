@@ -3,7 +3,7 @@ import { Button, TouchableOpacity, View } from "react-native";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Text } from "~/components/ui/text";
 import TaskDialog from "./TaskDialogue";
-import { CrossIcon } from "lucide-react-native";
+import { CrossIcon, XCircleIcon, XIcon } from "lucide-react-native";
 
 export interface Task {
   id: number;
@@ -55,15 +55,13 @@ export default function Task({ task: propTask, onDelete }: TaskProps) {
         </View>
         <View className="flex justify-center items-center">
           <TouchableOpacity onPress={handleDelete}>
-
-            <CrossIcon fill={"#EF4444"} size={24} />
+            <XCircleIcon size={36} fill="#FF757F" />
           </TouchableOpacity>
-
-
         </View>
       </TouchableOpacity>
 
       <TaskDialog
+        dialogTitle="Edit Task"
         task={task}
         setTask={setTask}
         showDialog={showDialog}
