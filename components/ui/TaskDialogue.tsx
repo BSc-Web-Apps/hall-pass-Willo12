@@ -1,19 +1,16 @@
+import { AlarmClockCheck, Pencil } from "lucide-react-native";
 import * as React from "react";
 import { View } from "react-native";
-import { Task } from "~/components/ui/task";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  DialogFooter
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
+import { Task } from "~/components/ui/task";
 import { Text } from "~/components/ui/text";
 import { useTasks } from "~/lib/TaskContext";
-import { AlarmClockCheck, Pen, Pencil } from "lucide-react-native";
 
 interface TaskDialogProps {
   task: Task;
@@ -53,20 +50,15 @@ export default function TaskDialog({
   };
 
   const handleSave = () => {
-    // Only proceed if title is not empty
     if (editedTitle.trim()) {
-      // Create the updated task
       const updatedTask = {
         ...task,
         title: editedTitle,
         category: editedCategory,
       };
 
-      // First close the dialog
       setShowDialog(false);
 
-      // Then update the task and call onSave
-      // This ensures the dialog is closed before any state updates
       setTimeout(() => {
         setTask(updatedTask);
         if (onSave) {
@@ -74,14 +66,12 @@ export default function TaskDialog({
         }
       }, 0);
     } else {
-      // Just close the dialog if title is empty
       setShowDialog(false);
     }
   };
 
   const handleDelete = () => {
     setShowDialog(false);
-    // Use setTimeout to ensure dialog is closed before deletion
     setTimeout(() => {
       deleteTask(task.id);
     }, 0);
