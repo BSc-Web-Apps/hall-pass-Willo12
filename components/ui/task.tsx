@@ -67,7 +67,7 @@ export default function Task({ task: propTask, onUpdate }: TaskProps) {
           >
             {title}
           </Text>
-          <Text className="text-foreground-transparent text-xl">
+          <Text className={`text-foreground-transparent text-xl ${isChecked ? "opacity-50" : "opacity-100"}`}>
             {category}
           </Text>
         </View>

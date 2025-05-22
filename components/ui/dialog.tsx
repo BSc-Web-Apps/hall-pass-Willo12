@@ -68,7 +68,7 @@ const DialogContent = React.forwardRef<
         <DialogPrimitive.Content
           ref={ref}
           className={cn(
-            'max-w-lg gap-4 border border-border web:cursor-default bg-background p-6 shadow-lg web:duration-200 rounded-lg',
+            'max-w-lg gap-4 translate-y-48 bg-["#0D0402"] web:cursor-default  p-6 shadow-lg web:duration-200 rounded-lg',
             open
               ? 'web:animate-in web:fade-in-0 web:zoom-in-95'
               : 'web:animate-out web:fade-out-0 web:zoom-out-95',
@@ -77,16 +77,6 @@ const DialogContent = React.forwardRef<
           {...props}
         >
           {children}
-          <DialogPrimitive.Close
-            className={
-              'absolute right-4 top-4 p-0.5 web:group rounded-sm opacity-70 web:ring-offset-background web:transition-opacity web:hover:opacity-100 web:focus:outline-none web:focus:ring-2 web:focus:ring-ring web:focus:ring-offset-2 web:disabled:pointer-events-none'
-            }
-          >
-            <X
-              size={Platform.OS === 'web' ? 16 : 18}
-              className={cn('text-muted-foreground', open && 'text-accent-foreground')}
-            />
-          </DialogPrimitive.Close>
         </DialogPrimitive.Content>
       </DialogOverlay>
     </DialogPortal>

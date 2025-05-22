@@ -11,6 +11,7 @@ import { TaskProvider } from "~/lib/TaskContext";
 import { useColorScheme } from "~/lib/useColorScheme";
 import HomeScreen from "./index";
 import SettingsScreen from "./settings";
+import { ListTodo } from "lucide-react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,38 +44,40 @@ export default function RootLayout() {
   }
 
   return (
-    <TaskProvider>
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: {
-            backgroundColor: "hsl(11, 72%, 3%)",
-            borderTopColor: "transparent",
-          },
-          tabBarActiveTintColor: "hsl(11, 100%, 60%)",
-          tabBarInactiveTintColor: "hsla(11, 20%, 64%, 0.5)",
-        }}
-      >
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <HomeIcon size={size} color={color} />
-            ),
+    <>
+      <TaskProvider>
+        <Tab.Navigator
+          screenOptions={{
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: "hsl(11, 72%, 3%)",
+              borderTopColor: "transparent",
+            },
+            tabBarActiveTintColor: "hsl(11, 100%, 60%)",
+            tabBarInactiveTintColor: "hsla(11, 20%, 64%, 0.5)",
           }}
-        />
-        <Tab.Screen
-          name="Settings"
-          component={SettingsScreen}
-          options={{
-            tabBarIcon: ({ color, size }) => <Info size={size} color={color} />,
-          }}
-        />
-      </Tab.Navigator>
-      <AddTask />
-      <PortalHost />
-    </TaskProvider>
+        >
+          <Tab.Screen
+            name="Todo"
+            component={HomeScreen}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <ListTodo size={size} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{
+              tabBarIcon: ({ color, size }) => <Info size={size} color={color} />,
+            }}
+          />
+        </Tab.Navigator>
+        <AddTask />
+        <PortalHost />
+      </TaskProvider>
+    </>
   );
 }
 

@@ -13,6 +13,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Text } from "~/components/ui/text";
 import { useTasks } from "~/lib/TaskContext";
+import { AlarmClockCheck, Pen, Pencil } from "lucide-react-native";
 
 interface TaskDialogProps {
   task: Task;
@@ -87,48 +88,47 @@ export default function TaskDialog({
   };
 
   return (
+
     <Dialog open={showDialog} onOpenChange={setShowDialog}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{isNewTask ? "Add" : "Edit"} Task</DialogTitle>
-          <DialogDescription className="w-80">
-            {isNewTask
-              ? "Add a new task here."
-              : "Make changes to your task details here."}
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="w-screen">
 
         <View className="gap-4">
-          <Input
-            value={editedTitle}
-            placeholder="Task title"
-            onChangeText={handleUpdateTitle}
-          />
-          <Input
-            value={editedCategory}
-            placeholder="Category"
-            onChangeText={handleUpdateCategory}
-          />
+          <View className="bg-[#261B18] rounded-3xl flex flex-row justify-start items-center pl-4"
+          >
+            <AlarmClockCheck stroke="white" />
+            <Input
+              className="rounded-3xl "
+              value={editedTitle}
+              placeholder="Task title"
+              onChangeText={handleUpdateTitle}
+            />
+          </View>
+          <View className="bg-[#261B18] rounded-3xl flex flex-row justify-start items-center pl-4"
+          >
+            <Pencil stroke="white" />
+            <Input
+              className=" rounded-3xl"
+              value={editedCategory}
+              placeholder="Notes"
+              onChangeText={handleUpdateCategory}
+            />
+
+          </View>
         </View>
 
         <DialogFooter>
-          <View className="flex flex-row justify-between w-full">
+          <View className="flex flex-row justify-evenly w-full mt-2">
             {!isNewTask && (
-              <Button variant="destructive" onPress={handleDelete}>
+              <Button variant="destructive" onPress={handleDelete} className="rounded-3xl w-24">
                 <Text className="text-white">Delete</Text>
               </Button>
             )}
-            <View className="flex flex-row gap-2">
-              <Button variant="outline" onPress={() => setShowDialog(false)}>
-                <Text>Cancel</Text>
-              </Button>
-              <Button onPress={handleSave}>
-                <Text>Save changes</Text>
-              </Button>
-            </View>
+            <Button onPress={handleSave} className="bg-[#FF5833] rounded-3xl w-48">
+              <Text>Save Task</Text>
+            </Button>
           </View>
         </DialogFooter>
       </DialogContent>
-    </Dialog>
+    </Dialog >
   );
 }
