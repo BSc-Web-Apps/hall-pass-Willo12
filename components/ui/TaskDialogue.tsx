@@ -11,8 +11,7 @@ import { Input } from "~/components/ui/input";
 import { Task } from "~/components/ui/task";
 import { Text } from "~/components/ui/text";
 import { useTasks } from "~/lib/TaskContext";
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { Calendar } from "lucide-react-native";
+import { DatePicker } from "./DatePicker";
 
 interface TaskDialogProps {
   task: Task;
@@ -31,7 +30,6 @@ export default function TaskDialog({
 }: TaskDialogProps) {
   const { deleteTask } = useTasks();
   const isNewTask = task.id === 0;
-  const isWeb = Platform.OS === 'web';
 
   const [editedTitle, setEditedTitle] = React.useState(task.title);
   const [editedCategory, setEditedCategory] = React.useState(task.category);
@@ -41,8 +39,6 @@ export default function TaskDialog({
   const [endDate, setEndDate] = React.useState<Date | undefined>(
     task.endDate ? new Date(task.endDate) : undefined
   );
-  const [showStartPicker, setShowStartPicker] = React.useState(false);
-  const [showEndPicker, setShowEndPicker] = React.useState(false);
 
   // Reset internal state when dialog opens or task changes
   React.useEffect(() => {
@@ -62,20 +58,14 @@ export default function TaskDialog({
     setEditedCategory(category);
   };
 
-  const handleStartDateChange = (event: any, selectedDate?: Date) => {
-    setShowStartPicker(false);
-    if (selectedDate) {
-      setStartDate(selectedDate);
-      updateNotesWithDates(selectedDate, endDate);
-    }
+  const handleStartDateChange = (selectedDate?: Date) => {
+    setStartDate(selectedDate);
+    updateNotesWithDates(selectedDate, endDate);
   };
 
-  const handleEndDateChange = (event: any, selectedDate?: Date) => {
-    setShowEndPicker(false);
-    if (selectedDate) {
-      setEndDate(selectedDate);
-      updateNotesWithDates(startDate, selectedDate);
-    }
+  const handleEndDateChange = (selectedDate?: Date) => {
+    setEndDate(selectedDate);
+    updateNotesWithDates(startDate, selectedDate);
   };
 
   const updateNotesWithDates = (start?: Date, end?: Date) => {
@@ -83,7 +73,7 @@ export default function TaskDialog({
     if (notes.includes('From:') || notes.includes('To:')) {
       notes = ''; // Clear if it was just dates before
     }
-
+    
     const dateInfo = [];
     if (start) {
       dateInfo.push(`From: ${formatDate(start)}`);
@@ -91,7 +81,7 @@ export default function TaskDialog({
     if (end) {
       dateInfo.push(`To: ${formatDate(end)}`);
     }
-
+    
     const newNotes = [notes, ...dateInfo].filter(Boolean).join(' | ');
     setEditedCategory(newNotes);
   };
@@ -136,49 +126,6 @@ export default function TaskDialog({
     }, 0);
   };
 
-  const renderDatePicker = (
-    date: Date | undefined,
-    onPress: () => void,
-    onChange: (event: any, date?: Date) => void,
-    showPicker: boolean,
-    label: string
-  ) => {
-    if (isWeb) {
-      return (
-        <View className="flex flex-row items-center gap-2">
-          <Text className="absolute ml-4">{label}:</Text>
-          <input
-            type="date"
-            value={date ? date.toISOString().split('T')[0] : ''}
-            onChange={(e) => onChange(e, e.target.value ? new Date(e.target.value) : undefined)}
-            className="bg-[#261B18] text-white rounded-3xl px-4 py-2 w-40 pl-24"
-            placeholder="Select date"
-          />
-        </View>
-      );
-    }
-
-    return (
-      <View className="flex flex-row items-center gap-2">
-        <Button
-          variant="outline"
-          className="bg-[#261B18] rounded-3xl flex-row items-center gap-2"
-          onPress={onPress}
-        >
-          <Calendar className="w-5 h-5" />
-          <Text>{label}: {formatDate(date)}</Text>
-        </Button>
-        {showPicker && date && (
-          <DateTimePicker
-            value={date}
-            mode="date"
-            onChange={onChange}
-          />
-        )}
-      </View>
-    );
-  };
-
   return (
     <Dialog open={showDialog} onOpenChange={setShowDialog}>
       <DialogContent className="w-screen">
@@ -202,21 +149,16 @@ export default function TaskDialog({
             />
           </View>
           <View className="flex flex-row w-full justify-around">
-
-            {renderDatePicker(
-              startDate,
-              () => setShowStartPicker(true),
-              handleStartDateChange,
-              showStartPicker,
-              "Start Date"
-            )}
-            {renderDatePicker(
-              endDate,
-              () => setShowEndPicker(true),
-              handleEndDateChange,
-              showEndPicker,
-              "End Date"
-            )}
+            <DatePicker
+              date={startDate}
+              onChange={handleStartDateChange}
+              label="Start Date"
+            />
+            <DatePicker
+              date={endDate}
+              onChange={handleEndDateChange}
+              label="End Date"
+            />
           </View>
         </View>
 

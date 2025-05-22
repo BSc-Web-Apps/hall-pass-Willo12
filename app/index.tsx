@@ -16,12 +16,7 @@ export default function HomeScreen() {
         </Text>
         <CircleCheck className="" size={60} stroke={"#614E49"} strokeWidth={-2} />
       </View>
-      <ScrollView
-        contentContainerStyle={{
-          paddingHorizontal: 24,
-          paddingVertical: 16,
-        }}
-      >
+      <ScrollView className="px-6 h-20 mb-40">
         {isLoading ? (
           <Text className="text-center text-foreground text-lg">
             Loading tasks...
