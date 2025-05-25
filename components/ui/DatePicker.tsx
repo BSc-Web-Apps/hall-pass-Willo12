@@ -3,7 +3,7 @@ import { View, Platform } from "react-native";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { Calendar } from "lucide-react-native";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import  DateTimePicker from '@react-native-community/datetimepicker';
 
 interface DatePickerProps {
   date: Date | undefined;

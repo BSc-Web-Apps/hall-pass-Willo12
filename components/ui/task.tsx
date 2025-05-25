@@ -57,6 +57,7 @@ export default function Task({ task: propTask, onUpdate }: TaskProps) {
       >
         <View className="px-8 pt-8 w-24 h-full">
           <Checkbox
+            testID="checkbox"
             className="border-foreground checked:bg-foreground"
             checked={isChecked}
             onCheckedChange={handleSetChecked}
