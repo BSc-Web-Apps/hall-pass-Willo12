@@ -9,6 +9,7 @@ import { Home as HomeIcon } from "~/lib/icons/Home";
 import { Info } from "~/lib/icons/Info";
 import { TaskProvider } from "~/lib/TaskContext";
 import { useColorScheme } from "~/lib/useColorScheme";
+import { PopupProvider } from "~/lib/PopupContext";
 import HomeScreen from "./index";
 import SettingsScreen from "./settings";
 import { ListTodo } from "lucide-react-native";
@@ -44,7 +45,7 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <PopupProvider>
       <TaskProvider>
         <Tab.Navigator
           screenOptions={{
@@ -77,7 +78,7 @@ export default function RootLayout() {
         <AddTask />
         <PortalHost />
       </TaskProvider>
-    </>
+    </PopupProvider>
   );
 }
 

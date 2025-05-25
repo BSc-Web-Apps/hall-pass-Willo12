@@ -12,6 +12,8 @@ import { Task } from "~/components/ui/task";
 import { Text } from "~/components/ui/text";
 import { useTasks } from "~/lib/TaskContext";
 import { DatePicker } from "./DatePicker";
+import { usePopup } from "~/lib/PopupContext";
+import Popup from "./Popup";
 
 interface TaskDialogProps {
   task: Task;
@@ -29,7 +31,19 @@ export default function TaskDialog({
   onSave,
 }: TaskDialogProps) {
   const { deleteTask } = useTasks();
+  const { showPopup } = usePopup();
   const isNewTask = task.id === 0;
+  const [isPopupVisible, setIsPopupVisible] = React.useState(false);
+
+  // Add effect to reset popup visibility
+  React.useEffect(() => {
+    if (isPopupVisible) {
+      const timer = setTimeout(() => {
+        setIsPopupVisible(false);
+      }, 2000); // slightly longer than the popup's own timeout
+      return () => clearTimeout(timer);
+    }
+  }, [isPopupVisible]);
 
   const [editedTitle, setEditedTitle] = React.useState(task.title);
   const [editedCategory, setEditedCategory] = React.useState(task.category);
@@ -39,6 +53,7 @@ export default function TaskDialog({
   const [endDate, setEndDate] = React.useState<Date | undefined>(
     task.endDate ? new Date(task.endDate) : undefined
   );
+
 
   // Reset internal state when dialog opens or task changes
   React.useEffect(() => {
@@ -113,6 +128,7 @@ export default function TaskDialog({
         if (onSave) {
           onSave(updatedTask);
         }
+        setIsPopupVisible(true);
       }, 0);
     } else {
       setShowDialog(false);
@@ -127,6 +143,8 @@ export default function TaskDialog({
   };
 
   return (
+    <>
+
     <Dialog open={showDialog} onOpenChange={setShowDialog}>
       <DialogContent className="w-screen">
         <View className="gap-4">
@@ -170,11 +188,13 @@ export default function TaskDialog({
               </Button>
             )}
             <Button onPress={handleSave} className="bg-[#FF5833] rounded-3xl w-48">
-              <Text>Save Task</Text>
+              <Text className="text-white">Save Task</Text>
             </Button>
           </View>
         </DialogFooter>
       </DialogContent>
     </Dialog>
+    <Popup trigger={isPopupVisible} />
+    </>
   );
 }
