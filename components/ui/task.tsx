@@ -77,6 +77,7 @@ export default function Task({ task: propTask, onUpdate }: TaskProps) {
       </TouchableOpacity>
 
       <TaskDialog
+        isEdit={true}
         task={task}
         setTask={handleTaskUpdate}
         showDialog={showDialog}

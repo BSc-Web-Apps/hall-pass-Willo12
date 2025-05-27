@@ -21,6 +21,7 @@ interface TaskDialogProps {
   setShowDialog: (showDialog: boolean) => void;
   showDialog: boolean;
   onSave?: (updatedTask: Task) => void;
+  isEdit: boolean;
 }
 
 export default function TaskDialog({
@@ -29,6 +30,7 @@ export default function TaskDialog({
   setShowDialog,
   showDialog,
   onSave,
+  isEdit,
 }: TaskDialogProps) {
   const { deleteTask } = useTasks();
   const { showPopup } = usePopup();
@@ -128,7 +130,9 @@ export default function TaskDialog({
         if (onSave) {
           onSave(updatedTask);
         }
-        setIsPopupVisible(true);
+        if (!isEdit) {
+          setIsPopupVisible(true);
+        }
       }, 0);
     } else {
       setShowDialog(false);

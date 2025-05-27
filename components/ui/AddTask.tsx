@@ -67,6 +67,7 @@ export default function AddTask() {
       </View>
 
       <TaskDialog
+        isEdit={false}
         task={blankTask}
         setTask={setTask}
         showDialog={showDialog}
