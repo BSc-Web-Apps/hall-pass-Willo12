@@ -119,8 +119,8 @@ export default function TaskDialog({
         ...task,
         title: editedTitle,
         category: editedCategory,
-        startDate,
-        endDate,
+         startDate,
+         endDate,
       };
 
       setShowDialog(false);
